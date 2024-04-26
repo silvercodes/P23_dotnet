@@ -1,0 +1,9 @@
+dotnet --version
+
+dotnet new list				// список возможных шаблонов приложений
+
+dotnet new console -o 00_intro	// создать консольное приложение в папке 00_intro (в текущей)
+
+dotnet build					// скомпилировать в сборку
+
+dotnet run						// запустить текущий проект
