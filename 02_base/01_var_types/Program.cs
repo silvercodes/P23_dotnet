@@ -1,7 +1,4 @@
-﻿
-
-
-#region vars
+﻿#region vars
 //int a;
 
 //int _b;
@@ -88,42 +85,65 @@
 
 #region Literals
 
-bool a = true; // false
+//bool a = true; // false
 
-int b = 5;
-int c = 0b0101001001;
-int d = 0xFF;
+//int b = 5;
+//int c = 0b0101001001;
+//int d = 0xFF;
 
-double e = 4.5;
-double f = -0.00001;
-double g = 2.1e3;           // 2.1 * 10^3
-double h = 3.2e-28;
+//double e = 4.5;
+//double f = -0.00001;
+//double g = 2.1e3;           // 2.1 * 10^3
+//double h = 3.2e-28;
 
-char j = 'x';
-// char k = 45; // ERROR
-char l = '\n'; // \t\b\0...
-char m = '\x90';
+//char j = 'x';
+//// char k = 45; // ERROR
+//char l = '\n'; // \t\b\0...
+//char m = '\x90';
 
-// string n = "hello Vasia";
-string n = "hello \"Vasia\"";
-string o = "hello \"Vasia\"";
+//// string n = "hello Vasia";
+//string n = "hello \"Vasia\"";
+//string o = "hello \"Vasia\"";
 
-string email = "vasia@mail.com";
-int age = 34;
-string p = $"email: {email} age: {age}";
-Console.WriteLine(p);
-
-
-
-
-
+//string email = "vasia@mail.com";
+//int age = 34;
+//string p = $"email: {email} age: {age}";
+//Console.WriteLine(p);
 
 #endregion
 
+#region Console
+
+// Console.Clear();
+
+// Console.Read();          // read next char
+// int ch = Console.Read();
+
+// Console.ReadKey();
+// ConsoleKeyInfo key = Console.ReadKey();
+
+// Console.ReadLine();
+// string input = Console.ReadLine();
+
+// Console.Write() / Console.WriteLine()
+//Console.WriteLine("new line");
+//Console.Write("write");
+//Console.Write("write");
 
 
+// Colors
+//Console.BackgroundColor = ConsoleColor.Red;
+//Console.ForegroundColor = ConsoleColor.Green;
+//Console.WriteLine("Hello Vasia");
+//Console.ResetColor();
 
 
+// positions
+//Console.SetBufferSize(180, 20);
+Console.SetCursorPosition(20, 4);
+Console.Write("Vasia");
+// Console.SetWindowPosition(10, 10);
+//Console.SetWindowSize(180, 20);
 
-
+#endregion
 
