@@ -147,24 +147,91 @@
 
 
 // ---- 2.3 readonly ref (FROM C#12)
-void renderDouble(ref readonly int n)
-{
-    // n = 56;  // ERROR
+//void renderDouble(ref readonly int n)
+//{
+//    // n = 56;  // ERROR
 
-    Console.WriteLine(n * 2);
-}
+//    Console.WriteLine(n * 2);
+//}
 
-int val = 12;
-renderDouble(ref val);
+//int val = 12;
+//renderDouble(ref val);
 
 
 #endregion
 
 
+#region Local functions
+
+//public class Programm
+//{
+//    static void Main()
+//    {
+//        int a = 45;
+//        int b = 12;
+
+//        Console.WriteLine(Sum1());
+
+//        int Sum1()
+//        {
+//            return a + b;
+//        }
+
+//        static int Sum2()
+//        {
+//            // return a + b;  // ERROR
+//        }
+//    }
+//}
 
 
+//int a = 45;
+//int b = 12;
+
+//Console.WriteLine(Sum1());
+
+//int Sum1()
+//{
+//    return a + b;
+//}
+
+//static int Sum2()
+//{
+//    // return a + b;  // ERROR
+//    return 0;
+//}
+
+#endregion
 
 
+#region Enum
+
+//void f1(Color color)
+//{
+
+//}
+
+//f1(Color.Red);
+
+//Console.WriteLine(Color.Green);
+
+//Console.WriteLine((int)Color.Green);
 
 
+//enum Color
+//{
+//    Red,
+//    Green, 
+//    Blue,
+//}
+
+//enum Size: byte
+//{
+//    Small,
+//    Medium,
+//    Large
+//}
+
+
+#endregion
 
