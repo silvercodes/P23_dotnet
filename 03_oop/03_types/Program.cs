@@ -56,7 +56,6 @@
 #endregion
 
 
-
 #region example 2
 
 //void Func()
@@ -113,7 +112,6 @@
 #endregion
 
 
-
 #region example 4
 
 //void Func()
@@ -149,43 +147,90 @@
 
 #region practice
 
-void Func1(Role role)
-{
+//void Func1(Role role)
+//{
 
-}
+//}
 
-void Func2(ref Role role)
-{
+//void Func2(ref Role role)
+//{
 
-}
+//}
 
-void Func3(User user)
-{
+//void Func3(User user)
+//{
 
-}
+//}
 
-void Func4(ref User user)
-{
+//void Func4(ref User user)
+//{
 
-}
+//}
 
-Role role = new Role();
-User user = new User();
+//Role role = new Role();
+//User user = new User();
 
-Func1(role);
-Func2(ref role);
-Func3(user);
-Func4(ref user);
+//Func1(role);
+//Func2(ref role);
+//Func3(user);
+//Func4(ref user);
 
 
-class Role
-{
+//class Role
+//{
     
-}
+//}
 
-struct User
-{
+//struct User
+//{
     
-}
+//}
+
+#endregion
+
+
+#region Example with ref
+
+//void Method1(Point p)
+//{
+//    // p.x = 100;
+
+//    p = new Point(1, 1);        // создаётся локальный объект
+//}
+
+//void Method2(ref Point p)
+//{
+//    // p.x = 100;
+
+//    p = new Point(1, 1);        // создаётся ещё один объект под ссылку a
+//}
+
+
+//Point a = new(10, 15);
+//a.Show();
+
+////Method1(a);
+////a.Show();
+
+//Method2(ref a);
+//a.Show();
+
+
+
+//class Point
+//{
+//    public int x;
+//    public int y;
+//    public Point(int x, int y)
+//    {
+//        this.x = x;
+//        this.y = y;
+//    }
+//    public void Show()
+//    {
+//        Console.WriteLine($"Point ({x};{y})");
+//    }
+//}
+
 
 #endregion

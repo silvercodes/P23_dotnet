@@ -7,3 +7,14 @@ dotnet new console -o 00_intro	// создать консольное прило
 dotnet build					// скомпилировать в сборку
 
 dotnet run						// запустить текущий проект
+
+
+dotnet new sln					// создать solution в текущей папке
+
+dotnet sln add Project1			// добавить в solution проект Project1
+
+dotnet add reference ../MathLib/MathLib.csproj
+
+
+
+	
