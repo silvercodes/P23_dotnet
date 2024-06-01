@@ -1,0 +1,21 @@
+{
+  "id": 101,
+  "email": "vasia@mail.com",
+  "age": 34,
+  "is_admin": true,
+  "role": null,
+  "permissions": [
+    "read",
+    "write"
+  ],
+  "albums": [
+    {
+      "id": 201,
+      "title": "album_1"
+    },
+    {
+      "id": 202,
+      "title": "album_2"
+    }
+  ]
+}
