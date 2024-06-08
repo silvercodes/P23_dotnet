@@ -196,7 +196,7 @@
 //    //}
 //}
 
-//class Student: User
+//class Student : User
 //{
 //    public override int Age
 //    {
@@ -206,7 +206,7 @@
 //            base.Age = value >= 18 ? value : 18;
 //        }
 //    }
-//    public Student(int id, int age):
+//    public Student(int id, int age) :
 //        base(id, age)
 //    { }
 
@@ -219,9 +219,9 @@
 
 //class SuperStudent : Student
 //{
-//    public SuperStudent(int id, int age) 
+//    public SuperStudent(int id, int age)
 //        : base(id, age)
-//    {}
+//    { }
 
 //    //public override void Show()                       // ERROR
 //    //{
@@ -320,9 +320,9 @@
 //        get => $"admin: {base.Email}";
 //        set => base.Email = value;
 //    }
-//    public Admin(int id, string email) 
+//    public Admin(int id, string email)
 //        : base(id, email)
-//    {}
+//    { }
 
 //    public new void Show()
 //    {
@@ -333,8 +333,4 @@
 
 
 #endregion
-
-
-
-
 
