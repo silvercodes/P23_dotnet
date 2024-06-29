@@ -690,7 +690,7 @@
 
 #region invariance (as it is) / covariance (up to types, out T) / contrvariance (down to types, in T)
 
-// ------------------- инвариантный обобщённый интерфейс -------------------
+// ------------------- обобщённый интерфейс с инвариантным универсальным параметром -------------------
 
 //MySqlManager manager = new MySqlManager();
 
@@ -719,7 +719,7 @@
 //class MySqlConnection : Connection
 //{
 //    public MySqlConnection(string? config) : base(config)
-//    {}
+//    { }
 //}
 
 
@@ -728,7 +728,7 @@
 //{
 //    T CreateConnection(string connfig);
 //}
-//class MySqlManager: IConnectionManager<MySqlConnection>
+//class MySqlManager : IConnectionManager<MySqlConnection>
 //{
 //    public MySqlConnection CreateConnection(string config)
 //    {
@@ -740,7 +740,7 @@
 
 
 
-// ------------------- ковариантный обобщённый интерфейс -------------------
+// ------------------- обобщённый интерфейс с ковариантным универсальным параметром -------------------
 
 // ===== example 1
 //MySqlManager manager_0 = new MySqlManager();
@@ -762,7 +762,7 @@
 //    new SqlServManager(),
 //};
 
-//foreach(IConnectionManager<Connection> manager in list)
+//foreach (IConnectionManager<Connection> manager in list)
 //    Console.WriteLine(manager.CreateConnection("main config").Config);
 
 
@@ -783,7 +783,7 @@
 //class SqlServConnection : Connection
 //{
 //    public SqlServConnection(string? config) : base(config)
-//    {}
+//    { }
 //}
 
 
@@ -837,18 +837,18 @@
 //class Archer : Unit
 //{
 //    public Archer(string title, int hp) : base(title, hp)
-//    {}
+//    { }
 //}
 //class Assasin : Archer
 //{
 //    public Assasin(string title, int hp) : base(title, hp)
-//    {}
+//    { }
 //}
 
 //class Warrior : Unit
 //{
 //    public Warrior(string title, int hp) : base(title, hp)
-//    {}
+//    { }
 //}
 
 //interface IUnitBuilder
@@ -878,103 +878,175 @@
 
 
 
-IUnitBuilder<Unit> u1 = new ArcherBuilder();
-IUnitBuilder<Unit> u2 = new WarriorBuilder();
-IUnitBuilder<Unit> u3 = new AssasinBuilder();
+//IUnitBuilder<Unit> u1 = new ArcherBuilder();
+//IUnitBuilder<Unit> u2 = new WarriorBuilder();
+//IUnitBuilder<Unit> u3 = new AssasinBuilder();
 
 
 
-class Unit
+//class Unit
+//{
+//    public string Title { get; set; }
+//    public int Hp { get; set; }
+//    public Unit(string title, int hp)
+//    {
+//        Title = title;
+//        Hp = hp;
+//    }
+//}
+
+
+//class Archer : Unit
+//{
+//    public Archer(string title, int hp) : base(title, hp)
+//    { }
+//}
+//class Assasin : Archer
+//{
+//    public Assasin(string title, int hp) : base(title, hp)
+//    { }
+//}
+
+//class Warrior : Unit
+//{
+//    public Warrior(string title, int hp) : base(title, hp)
+//    { }
+//}
+
+
+
+//interface IUnitBuilder<out T>
+//{
+//    public T BuildUnit(string title, int hp);
+//}
+
+//class ArcherBuilder : IUnitBuilder<Archer>
+//{
+//    public Archer BuildUnit(string title, int hp)
+//    {
+//        return new Archer(title, hp);
+//    }
+//}
+
+//class AssasinBuilder : IUnitBuilder<Assasin>
+//{
+//    public Assasin BuildUnit(string title, int hp)
+//    {
+//        return new Assasin(title, hp);
+//    }
+//}
+
+//class WarriorBuilder : IUnitBuilder<Warrior>
+//{
+//    public Warrior BuildUnit(string title, int hp)
+//    {
+//        return new Warrior(title, hp);
+//    }
+//}
+
+
+
+
+
+
+// ------------------- обобщённый интерфейс с конрвариантным универсальным параметром -------------------
+
+
+
+//object m0 = new MySqlManager();
+
+//MySqlManager m1 = new MySqlManager();
+
+//IConnectionManager<Connection> m2 = new MySqlManager();
+
+//IConnectionManager<MySqlConnection> m3 = new MySqlManager();
+//m3.SetConnection(new MySqlConnection("config string"));
+//// m3.SetConnection(new Connection("config string"));           // ERROR
+
+//IConnectionManager<SqlServConnection> m4 = new SqlServManager();
+//m4.SetConnection(new SqlServConnection("config"));
+//m4.SetConnection(new DefaultSqlServConnection("config"));
+
+
+
+
+//class Connection
+//{
+//    public string? Config { get; set; }
+//    public Connection(string? config)
+//    {
+//        Config = config;
+//    }
+//}
+//class MySqlConnection : Connection
+//{
+//    public MySqlConnection(string? config) : base(config)
+//    { }
+//}
+//class SqlServConnection : Connection
+//{
+//    public SqlServConnection(string? config) : base(config)
+//    { }
+//}
+
+//class DefaultSqlServConnection : SqlServConnection
+//{
+//    public DefaultSqlServConnection(string? config) : base(config)
+//    {}
+//}
+
+
+
+//interface IConnectionManager<in T>
+//    where T : Connection
+//{
+//    public void SetConnection(T conn);
+//}
+//class MySqlManager : IConnectionManager<Connection>
+//{
+//    public void SetConnection(Connection conn)
+//    {
+//        Console.WriteLine($"MySqlManager: {conn.Config}");
+//    }
+//}
+//class SqlServManager : IConnectionManager<Connection>
+//{
+//    public void SetConnection(Connection conn)
+//    {
+//        Console.WriteLine($"SqlServManager: {conn.Config}");
+//    }
+//}
+
+
+
+
+
+
+
+
+
+// ------------------- обобщённый интерфейс с разными универсальными параметроми -------------------
+
+
+
+ILogger<int, A, C> logger = new Logger();
+
+interface ILogger<T, out K, in V>
 {
-    public string Title { get; set; }
-    public int Hp { get; set; }
-    public Unit(string title, int hp)
-    {
-        Title = title;
-        Hp = hp;
-    }
+
 }
 
+class A {}
 
-class Archer : Unit
+class B: A {}
+
+class C: B { }
+
+
+class Logger: ILogger<int, C, A>
 {
-    public Archer(string title, int hp) : base(title, hp)
-    { }
+
 }
-class Assasin : Archer
-{
-    public Assasin(string title, int hp) : base(title, hp)
-    { }
-}
-
-class Warrior : Unit
-{
-    public Warrior(string title, int hp) : base(title, hp)
-    { }
-}
-
-
-
-interface IUnitBuilder<out T>
-{
-    public T BuildUnit(string title, int hp);
-}
-
-class ArcherBuilder : IUnitBuilder<Archer>
-{
-    public Archer BuildUnit(string title, int hp)
-    {
-        return new Archer(title, hp);
-    }
-}
-
-class AssasinBuilder : IUnitBuilder<Assasin>
-{
-    public Assasin BuildUnit(string title, int hp)
-    {
-        return new Assasin(title, hp);
-    }
-}
-
-class WarriorBuilder : IUnitBuilder<Warrior>
-{
-    public Warrior BuildUnit(string title, int hp)
-    {
-        return new Warrior(title, hp);
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #endregion
