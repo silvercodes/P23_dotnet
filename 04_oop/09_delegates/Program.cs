@@ -779,15 +779,279 @@
 
 // 3. ==== Func<T..., TResult> ====
 
-Func<int> f1 = () => 5;
+//Func<int> f1 = () => 5;
 
-Func<int, string> f2 = n => "string";
+//Func<int, string> f2 = n => "string";
 
-Func<int, int, string> f3 = (a, b) => "string";
+//Func<int, int, string> f3 = (a, b) => "string";
 
-// Func<int, bool> f4 = n => true;                 // Like a Predicate<T>
+//// Func<int, bool> f4 = n => true;                 // Like a Predicate<T>
 
 #endregion
+
+#region Practice4
+
+//Func<int, int, int> GenerateOperation(Operation op) => op switch
+//{ 
+//    Operation.Sum => (a, b) => a + b,
+//    Operation.Mult => (a, b) => a * b,
+//    Operation.Div => (a, b) => a / b,
+//};
+
+//Func<int, int, int> res = GenerateOperation(Operation.Div);
+//res?.Invoke(3, 4);
+
+//enum Operation
+//{
+//    Sum,
+//    Mult,
+//    Div,
+//}
+
+#endregion
+
+#region HW
+
+//Ping ping = new Ping();
+//Pong pong = new Pong();
+
+//ping.ReceiveHandler += () =>
+//{
+//    pong.DoPong();
+//};
+
+//pong.ReceiveHandler += () =>
+//{
+//    ping.DoPing();
+//};
+
+//ping.DoPing();
+
+
+//class Ping
+//{
+//    private int count = 0;
+//    public Action? ReceiveHandler;
+//    public void DoPing()
+//    {
+//        if(count < 3)
+//        {
+//            ++count;
+//            Console.WriteLine("PING");
+//            Thread.Sleep(1000);
+//            ReceiveHandler?.Invoke();
+//        }
+//    }
+
+//}
+
+//class Pong
+//{
+//    private int count = 0;
+//    public Action? ReceiveHandler;
+//    public void DoPong()
+//    {
+//        if(count < 3)
+//        {
+//            ++count;
+//            Console.WriteLine("PONG");
+//            Thread.Sleep(1000);
+//            ReceiveHandler?.Invoke();
+//        }
+
+//    }
+//}
+
+#endregion
+
+#region Covariance / contrvariance
+
+// ==== ковариантность
+
+//ConnectionHandler handler = ConnectToPg;                // ковариантность
+
+//Connection conn_1 = handler("connfig 1 string");
+//conn_1.Connect();
+
+//PgConnection? conn_2 = handler("config 2 string") as PgConnection;
+//conn_2?.Connect();
+
+//PgConnection ConnectToPg(string config)
+//{
+//    return new PgConnection(config);
+//}
+
+//delegate Connection ConnectionHandler(string config);
+
+
+
+// ==== контрвариантность
+
+//ConnectionHandler handler = RunConnection;              // контрвариантность
+//handler(new PgConnection("config string"));
+
+//void RunConnection(Connection conn) => conn.Connect();
+
+//delegate void ConnectionHandler(PgConnection conn);
+
+
+
+// ==== ковариантность в обобщённых делегатах
+
+//// -- инвариантность
+//ConnectionHandler<MySqlConnection> mySqlHandler = (string config) => new MySqlConnection(config);
+//// -- ковариантность
+//ConnectionHandler<Connection> handler = new ConnectionHandler<MySqlConnection>((string config) => new MySqlConnection(config));
+//Connection conn = handler("config string");
+//conn.Connect();
+
+//delegate T ConnectionHandler<out T>(string config);
+
+
+
+
+// ==== контрвариантность в обобщённых делегатах
+
+//// -- инвариантность
+//ConnectionHandler<Connection> handler = (Connection conn) => conn.Connect();
+//// -- контрвариантность
+//ConnectionHandler<MySqlConnection> mySqlHandler = new ConnectionHandler<Connection>((Connection conn) => conn.Connect());
+//mySqlHandler(new MySqlConnection("config"));
+
+
+//handler(new Connection("aaa"));
+//handler(new MySqlConnection("bbb"));
+//handler(new PgConnection("ccc"));
+
+
+//delegate void ConnectionHandler<in T>(T conn);
+
+
+
+//class Connection
+//{
+//    public string Config { get; set; }
+//    public Connection(string config)
+//    {
+//        Config = config;
+//    }
+//    public virtual void Connect()
+//    {
+//        Console.WriteLine($"Connection.Connect()");
+//    }
+//}
+
+//class MySqlConnection : Connection
+//{
+//    public MySqlConnection(string config) : base(config)
+//    {}
+
+//    public override void Connect()
+//    {
+//        Console.WriteLine($"MySqlConnection.Connect()");
+//    }
+//}
+
+//class PgConnection : Connection
+//{
+//    public PgConnection(string config) : base(config)
+//    { }
+
+//    public override void Connect()
+//    {
+//        Console.WriteLine($"PgConnection.Connect()");
+//    }
+//}
+
+
+#endregion
+
+#region Events
+
+Server server = new Server();
+server.Connected += s => Console.WriteLine(s);
+
+server.Disconnected += s => Console.WriteLine(s);
+server.Disconnected += RenderMessage;
+server.Disconnected -= RenderMessage;
+
+
+server.EmulateConnection();
+server.EmulateDisconnection();
+
+
+// server.Disconnected?.Invoke();                       // ERROR
+
+
+void RenderMessage(string message)
+{
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine(message);
+    Console.ResetColor();
+}
+
+class Server
+{
+    //private Action<string> clientConnected;
+
+    //public void AddClientConnectedHandler(Action<string> handler)
+    //{
+    //    clientConnected += handler;
+    //}
+
+    //public void EmulateConnection()
+    //{
+    //    //
+    //    //
+    //    clientConnected?.Invoke("connected");
+    //}
+
+
+
+    private Action<string>? disconnected;
+
+    public event Action<string>? Connected;
+
+    public event Action<string>? Disconnected
+    {
+        add
+        {
+            disconnected += value;
+            Console.WriteLine($"{value?.Method.Name} added...");
+        }
+        remove
+        {
+            disconnected -= value;
+            Console.WriteLine($"{value?.Method.Name} removed...");
+        }
+    }
+
+    public void EmulateConnection()
+    {
+        //
+        //
+        Connected?.Invoke("connected");
+    }
+
+    public void EmulateDisconnection()
+    {
+        //
+        //
+        disconnected?.Invoke("disconnected");
+
+    }
+}
+
+
+
+
+
+
+
+#endregion
+
+
+
 
 
 
