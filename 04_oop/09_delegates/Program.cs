@@ -968,81 +968,307 @@
 
 #region Events
 
-Server server = new Server();
-server.Connected += s => Console.WriteLine(s);
+// ---------------------------------------------------
+//Server server = new Server();
+//server.Connected += s => Console.WriteLine(s);
 
-server.Disconnected += s => Console.WriteLine(s);
-server.Disconnected += RenderMessage;
-server.Disconnected -= RenderMessage;
-
-
-server.EmulateConnection();
-server.EmulateDisconnection();
+//server.Disconnected += s => Console.WriteLine(s);
+//server.Disconnected += RenderMessage;
+//server.Disconnected -= RenderMessage;
 
 
-// server.Disconnected?.Invoke();                       // ERROR
+//server.EmulateConnection();
+//server.EmulateDisconnection();
 
 
-void RenderMessage(string message)
+//// server.Disconnected?.Invoke();                       // ERROR
+
+
+//void RenderMessage(string message)
+//{
+//    Console.ForegroundColor = ConsoleColor.Green;
+//    Console.WriteLine(message);
+//    Console.ResetColor();
+//}
+
+//class Server
+//{
+//    //private Action<string> clientConnected;
+
+//    //public void AddClientConnectedHandler(Action<string> handler)
+//    //{
+//    //    clientConnected += handler;
+//    //}
+
+//    //public void EmulateConnection()
+//    //{
+//    //    //
+//    //    //
+//    //    clientConnected?.Invoke("connected");
+//    //}
+
+
+
+//    private Action<string>? disconnected;
+
+//    public event Action<string>? Connected;
+
+//    public event Action<string>? Disconnected
+//    {
+//        add
+//        {
+//            disconnected += value;
+//            Console.WriteLine($"{value?.Method.Name} added...");
+//        }
+//        remove
+//        {
+//            disconnected -= value;
+//            Console.WriteLine($"{value?.Method.Name} removed...");
+//        }
+//    }
+
+//    public void EmulateConnection()
+//    {
+//        //
+//        //
+//        Connected?.Invoke("connected");
+//    }
+
+//    public void EmulateDisconnection()
+//    {
+//        //
+//        //
+//        disconnected?.Invoke("disconnected");
+
+//    }
+//}
+
+
+
+
+
+
+
+//// ---------------------------------------------------
+
+//Server server = new Server();
+//server.UserConnected += u => 
+//{
+//    Console.WriteLine($"User connected: {u.Id} {u.Email}");
+//};
+
+
+//User a = new User() { Id = 1, Email = "vasia@mail.com" };
+//User b = new User() { Id = 2, Email = "petya@mail.com" };
+
+//server.EmulateConnect(a);
+//server.EmulateConnect(b);
+
+
+//class User
+//{
+//    public int Id { get; set; }
+//    public string Email { get; set; } = string.Empty;
+//}
+
+//class Server
+//{
+//    public event Action<User> UserConnected;
+
+//    public List<User> Users { get; set; } = new List<User>();
+
+
+
+//    public void EmulateConnect(User user)
+//    {
+//        Users.Add(user);
+//        //
+//        //
+
+//        UserConnected?.Invoke(user);
+//    }
+//}
+
+
+
+
+
+
+
+
+
+// ---------------------------------------------------
+
+//Server server = new Server();
+
+//server.UserConnected += (server, args) =>
+//{
+//    Console.WriteLine($"Connected: {args.User.Email}, Date: {args.Date.ToShortTimeString()}");
+//};
+
+
+//User a = new User() { Id = 1, Email = "vasia@mail.com" };
+//User b = new User() { Id = 2, Email = "petya@mail.com" };
+
+//server.EmulateConnect(a);
+//server.EmulateConnect(b);
+
+
+//class User
+//{
+//    public int Id { get; set; }
+//    public string Email { get; set; } = string.Empty;
+//}
+
+//class ServerEventArgs
+//{
+//    public User User { get; set; }
+//    public DateTime Date { get; set; }
+
+//    public ServerEventArgs(User user, DateTime date)
+//    {
+//        User = user;
+//        Date = date;
+//    }
+//}
+
+//class Server
+//{
+//    public event Action<Server, ServerEventArgs> UserConnected;
+
+//    public List<User> Users { get; set; } = new List<User>();
+
+
+
+//    public void EmulateConnect(User user)
+//    {
+//        Users.Add(user);
+//        //
+//        //
+
+//        UserConnected?.Invoke(this, new ServerEventArgs(user, DateTime.Now));
+//    }
+//}
+
+
+
+
+
+
+// ---------------------------------------------------
+// Создать класс Account
+// Предусмотреть 2 события OnAdded, OnWithdrawen
+// Предусмотреть передачу в обработчик данных о дате, пользователе и сумме операции
+
+
+
+
+User a = new User() { Id = 1, Email = "vasia@mail.com" };
+User b = new User() { Id = 2, Email = "petya@mail.com" };
+
+Account accA = new Account(a, 1000);
+accA.OnAdded += (acc, args) => 
 {
-    Console.ForegroundColor = ConsoleColor.Green;
-    Console.WriteLine(message);
+    Console.WriteLine($"added --> {args.Date.ToLongTimeString()}: {args.User.Email}, acc: {acc.Id}, sum: {args.Sum}");
+};
+accA.OnAdded += SendEmail;
+accA.OnWithdrawen += (acc, args) =>
+{
+    Console.WriteLine($"withdrawen --> {args.Date.ToLongTimeString()}: {args.User.Email}, acc: {acc.Id}, sum: {args.Sum}");
+};
+accA.OnError += SendSms;
+
+void SendEmail(Account acc, AccountEventArgs args)
+{
+    Console.WriteLine($"EMAIL: added --> {args.Date.ToLongTimeString()}: {args.User.Email}, acc: {acc.Id}, sum: {args.Sum}");
+}
+void SendSms(Account acc, AccountEventArgs args)
+{
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine($"SMS: error --> sum = {args.Sum}");
     Console.ResetColor();
 }
 
-class Server
+
+
+try
 {
-    //private Action<string> clientConnected;
+    accA.Add(300);
+    accA.Withdraw(1000);
+    accA.Withdraw(500);
 
-    //public void AddClientConnectedHandler(Action<string> handler)
-    //{
-    //    clientConnected += handler;
-    //}
+}
+catch (AccountException ex)
+{
+    Console.WriteLine($"ERROR: {ex.Message}");
 
-    //public void EmulateConnection()
-    //{
-    //    //
-    //    //
-    //    clientConnected?.Invoke("connected");
-    //}
-
-
-
-    private Action<string>? disconnected;
-
-    public event Action<string>? Connected;
-
-    public event Action<string>? Disconnected
-    {
-        add
-        {
-            disconnected += value;
-            Console.WriteLine($"{value?.Method.Name} added...");
-        }
-        remove
-        {
-            disconnected -= value;
-            Console.WriteLine($"{value?.Method.Name} removed...");
-        }
-    }
-
-    public void EmulateConnection()
-    {
-        //
-        //
-        Connected?.Invoke("connected");
-    }
-
-    public void EmulateDisconnection()
-    {
-        //
-        //
-        disconnected?.Invoke("disconnected");
-
-    }
 }
 
 
+
+class AccountException : Exception
+{
+    public AccountException(string message) 
+        : base(message)
+    { }
+}
+class User
+{
+    public int Id { get; set; }
+    public string Email { get; set; } = string.Empty;
+}
+
+class AccountEventArgs
+{
+    public DateTime Date { get; set; }
+    public User User { get; set; }
+    public int Sum { get; set; }
+    public AccountEventArgs(DateTime date, User user, int sum)
+    {
+        Date = date;
+        User = user;
+        Sum = sum;
+    }
+}
+
+class Account
+{
+    public event Action<Account, AccountEventArgs>? OnAdded;
+    public event Action<Account, AccountEventArgs>? OnWithdrawen;
+    public event Action<Account, AccountEventArgs>? OnError;
+    public string Id { get; set; }
+    public User User { get; set; }
+    public int Sum { get; set; }
+
+    public Account(User user, int sum)
+    {
+        Id = Guid.NewGuid().ToString();
+        User = user;
+        Sum = sum;
+    }
+
+    public void Add(int sum)
+    {
+        Sum += sum;
+
+        OnAdded?.Invoke(this, new AccountEventArgs(DateTime.Now, User, sum));
+    }
+
+    public void Withdraw(int sum)
+    {
+        if (sum > Sum)
+        {
+            OnError?.Invoke(this, new AccountEventArgs(DateTime.Now, User, sum));
+
+            throw new AccountException($"Invalid requested sum: {sum}");
+        }
+            
+
+        Sum -= sum;
+
+        OnWithdrawen?.Invoke(this, new AccountEventArgs(DateTime.Now, User, sum));
+    }
+}
 
 
 
