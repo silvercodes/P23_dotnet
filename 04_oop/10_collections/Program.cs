@@ -192,3 +192,228 @@
 #endregion
 
 
+#region Dictionary<T, V>
+
+//Dictionary<int, string> planets = new Dictionary<int, string>()
+//{
+//    { 1, "Mercury" },
+//    { 2, "Venus" },
+//    { 3, "Earth" },
+//    { 4, "Mars" },
+//};
+
+//Dictionary<int, string> planets2 = new Dictionary<int, string>()
+//{
+//    [1] = "Mercury",
+//    [2] = "Venus",
+//    [3] = "Earth",
+//    [4] = "Mars",
+//};
+
+
+//KeyValuePair<int, string> pair;
+
+//foreach(KeyValuePair<int, string> planet in planets)
+//    Console.WriteLine($"id: {planet.Key}, value: {planet.Value}");
+
+//Console.WriteLine(planets[2]);
+
+//planets[5] = "Jupiter";
+
+#endregion
+
+
+#region ObservableCollection
+
+//using System.Collections.ObjectModel;
+//using System.Collections.Specialized;
+
+//ObservableCollection<User> users = new ObservableCollection<User>()
+//{
+//    new User(101, "vasia@mail.com"),
+//    new User(102, "petya@mail.com"),
+//    new User(103, "dima@mail.com"),
+//};
+
+//users.CollectionChanged += UsersCollectionChanged;
+
+//users.Add(new User(111, "kolya@mail.com"));
+//users.RemoveAt(0);
+
+//void UsersCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+//{
+//    switch(e.Action)
+//    {
+//        case NotifyCollectionChangedAction.Add:
+//            if (e.NewItems?[0] is User u)
+//            {
+//                Console.WriteLine("Add handler");
+//                Console.WriteLine(u);
+//            }
+//            break;
+//        case NotifyCollectionChangedAction.Remove:
+//            if (e.OldItems?[0] is User deletedUser)
+//            {
+//                Console.WriteLine("Remove handler");
+//                Console.WriteLine(deletedUser);
+//            }
+//            break;
+//    }
+//}
+
+//class User
+//{
+//    public int Id { get; set; }
+//    public string Email { get; set; }
+//    public User(int id, string email)
+//    {
+//        Id = id;
+//        Email = email;
+//    }
+//    public override string ToString()
+//    {
+//        return $"id: {Id}, email: {Email}";
+//    }
+//}
+
+#endregion
+
+
+#region IEnumerable<> IEnumerator<>
+
+using System.Collections;
+
+//Db db = new Db();
+
+//IEnumerator enumerator = db.GetEnumerator();
+//while(enumerator.MoveNext())
+//    Console.WriteLine($"item --> {enumerator.Current}");
+
+//Console.WriteLine("===========");
+
+//foreach(var value in db)
+//    Console.WriteLine($"item --> {value}");
+
+//class Db: IEnumerable
+//{
+//    private string[] planets =
+//    {
+//        "Mercury",
+//        "Venus",
+//        "Earth",
+//        "Mars"
+//    };
+
+//    public IEnumerator GetEnumerator()
+//    {
+//        return planets.GetEnumerator();
+//    }
+
+//    IEnumerator IEnumerable.GetEnumerator()
+//    {
+//        return planets.GetEnumerator();
+//    }
+//}
+
+
+
+
+
+
+
+
+
+IEnumerable<string> db = new Db();
+
+IEnumerator<string> enumerator = db.GetEnumerator();
+while(enumerator.MoveNext())
+    Console.WriteLine(enumerator.Current);
+
+
+Console.WriteLine("================");
+
+foreach(string p in db)
+    Console.WriteLine(p);
+
+
+class PlanetsDbEnumerator: IEnumerator<string>
+{
+    private string[] arr;
+    private int position = -1;
+    public string Current
+    {
+        get
+        {
+            if (position == -1 || position >= arr.Length)
+                throw new ArgumentOutOfRangeException(nameof(arr));
+
+            return arr[position];
+        }
+    }
+    object IEnumerator.Current
+    {
+        get
+        {
+            if (position == -1 || position >= arr.Length)
+                throw new ArgumentOutOfRangeException(nameof(arr));
+
+            return arr[position];
+        }
+    }
+
+    public PlanetsDbEnumerator(string[] arr)
+    {
+        this.arr = arr;
+    }
+
+    public void Dispose()
+    {
+
+    }
+
+    public bool MoveNext()
+    {
+        if (position < arr.Length - 1)
+        {
+            ++position;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void Reset()
+    {
+        position = -1;
+    }
+}
+
+class Db : IEnumerable<string>
+{
+    private string[] planets =
+    {
+        "Mercury",
+        "Venus",
+        "Earth",
+        "Mars"
+    };
+
+    public IEnumerator GetEnumerator()
+    {
+        return new PlanetsDbEnumerator(planets);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return new PlanetsDbEnumerator(planets);
+    }
+
+    IEnumerator<string> IEnumerable<string>.GetEnumerator()
+    {
+        return new PlanetsDbEnumerator(planets);
+    }
+}
+
+
+
+#endregion
