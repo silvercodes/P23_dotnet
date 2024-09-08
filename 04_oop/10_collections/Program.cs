@@ -281,7 +281,7 @@
 
 #region IEnumerable<> IEnumerator<>
 
-using System.Collections;
+//using System.Collections;
 
 //Db db = new Db();
 
@@ -321,99 +321,152 @@ using System.Collections;
 
 
 
+//IEnumerable<string> db = new Db();
+
+//IEnumerator<string> enumerator = db.GetEnumerator();
+//while(enumerator.MoveNext())
+//    Console.WriteLine(enumerator.Current);
 
 
-IEnumerable<string> db = new Db();
+//Console.WriteLine("================");
 
-IEnumerator<string> enumerator = db.GetEnumerator();
-while(enumerator.MoveNext())
-    Console.WriteLine(enumerator.Current);
-
-
-Console.WriteLine("================");
-
-foreach(string p in db)
-    Console.WriteLine(p);
+//foreach (string p in db)
+//    Console.WriteLine(p);
 
 
-class PlanetsDbEnumerator: IEnumerator<string>
-{
-    private string[] arr;
-    private int position = -1;
-    public string Current
-    {
-        get
-        {
-            if (position == -1 || position >= arr.Length)
-                throw new ArgumentOutOfRangeException(nameof(arr));
+//class PlanetsDbEnumerator : IEnumerator<string>
+//{
+//    private string[] arr;
+//    private int position = -1;
+//    public string Current
+//    {
+//        get
+//        {
+//            if (position == -1 || position >= arr.Length)
+//                throw new ArgumentOutOfRangeException(nameof(arr));
 
-            return arr[position];
-        }
-    }
-    object IEnumerator.Current
-    {
-        get
-        {
-            if (position == -1 || position >= arr.Length)
-                throw new ArgumentOutOfRangeException(nameof(arr));
+//            return arr[position];
+//        }
+//    }
+//    object IEnumerator.Current
+//    {
+//        get
+//        {
+//            if (position == -1 || position >= arr.Length)
+//                throw new ArgumentOutOfRangeException(nameof(arr));
 
-            return arr[position];
-        }
-    }
+//            return arr[position];
+//        }
+//    }
 
-    public PlanetsDbEnumerator(string[] arr)
-    {
-        this.arr = arr;
-    }
+//    public PlanetsDbEnumerator(string[] arr)
+//    {
+//        this.arr = arr;
+//    }
 
-    public void Dispose()
-    {
+//    public void Dispose()
+//    {
 
-    }
+//    }
 
-    public bool MoveNext()
-    {
-        if (position < arr.Length - 1)
-        {
-            ++position;
-            return true;
-        }
+//    public bool MoveNext()
+//    {
+//        if (position < arr.Length - 1)
+//        {
+//            ++position;
+//            return true;
+//        }
 
-        return false;
-    }
+//        return false;
+//    }
 
-    public void Reset()
-    {
-        position = -1;
-    }
-}
+//    public void Reset()
+//    {
+//        position = -1;
+//    }
+//}
 
-class Db : IEnumerable<string>
-{
-    private string[] planets =
-    {
-        "Mercury",
-        "Venus",
-        "Earth",
-        "Mars"
-    };
+//class Db : IEnumerable<string>
+//{
+//    private string[] planets =
+//    {
+//        "Mercury",
+//        "Venus",
+//        "Earth",
+//        "Mars"
+//    };
 
-    public IEnumerator GetEnumerator()
-    {
-        return new PlanetsDbEnumerator(planets);
-    }
+//    public IEnumerator GetEnumerator()
+//    {
+//        return new PlanetsDbEnumerator(planets);
+//    }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return new PlanetsDbEnumerator(planets);
-    }
+//    IEnumerator IEnumerable.GetEnumerator()
+//    {
+//        return new PlanetsDbEnumerator(planets);
+//    }
 
-    IEnumerator<string> IEnumerable<string>.GetEnumerator()
-    {
-        return new PlanetsDbEnumerator(planets);
-    }
-}
+//    IEnumerator<string> IEnumerable<string>.GetEnumerator()
+//    {
+//        return new PlanetsDbEnumerator(planets);
+//    }
+//}
 
 
+
+#endregion
+
+
+#region Task
+// Написать мини-приложение склада продуктов.
+// При добавлении продукта уведомлять пользователя по email и telegram
+// Использовать лямбды
+
+
+//using System.Collections.ObjectModel;
+//using System.Collections.Specialized;
+
+//ObservableCollection<Product> db = new ObservableCollection<Product>();
+
+
+//db.CollectionChanged += (sender, e) =>
+//{
+//    if (e.Action == NotifyCollectionChangedAction.Add)
+//    {
+//        Console.WriteLine($"Email --> Product added: {e.NewItems?[0]}");
+//    }
+//};
+//db.CollectionChanged += (sender, e) =>
+//{
+//    if (e.Action == NotifyCollectionChangedAction.Add)
+//    {
+//        TelegramSender ts = new TelegramSender();
+//        ts.Send($"Product added: {e.NewItems?[0]}");
+//    }
+//};
+
+
+//db.Add(new Product() { Id = 101, Title = "Table", Price = 2000 });
+
+
+//class Product
+//{
+//    public int Id { get; set; }
+//    public string Title { get; set; }
+//    public double Price { get; set; }
+//    public override string ToString()
+//    {
+//        return $"id: {Id}, title: {Title}, price: {Price}";
+//    }
+//}
+//class TelegramSender
+//{
+//    public void Send(string message)
+//    {
+//        Console.ForegroundColor = ConsoleColor.Green;
+//        Console.WriteLine(message);
+//        Console.ResetColor();
+//    }
+//}
 
 #endregion
