@@ -93,41 +93,98 @@
 
 
 
-class FileReader: IDisposable
+//class FileReader: IDisposable
+//{
+//    public string Path { get; set; }
+//    public int Mode { get; set; }
+
+//    private bool isDisposed = false;
+
+
+
+//    protected virtual void FreeMemory(bool needDisposing)
+//    {
+//        if (isDisposed)
+//            return;
+
+//        if (needDisposing)
+//        {
+//            // ОЧИСТКА УПРАВЛЯЕМЫХ РЕСУРСОВ
+//            Console.WriteLine("ОЧИСТКА УПРАВЛЯЕМЫХ РЕСУРСОВ");
+//        }
+
+//        // ОЧИСТКА НЕУПРАВЛЯЕМЫХ РЕСУРСОВ
+//        Console.WriteLine("ОЧИСТКА УПРАВЛЯЕМЫХ РЕСУРСОВ");
+
+//        isDisposed = true;
+//    }
+
+//    public void Dispose()
+//    {
+//        FreeMemory(true);
+//        GC.SuppressFinalize(this);
+//    }
+
+//    ~FileReader()
+//    {
+//        FreeMemory(false);
+//    }
+//}
+
+
+
+#endregion
+
+
+#region using{}
+
+
+
+void Execute()
 {
-    public string Path { get; set; }
-    public int Mode { get; set; }
+    //FileReader fr = new FileReader();
+    ////
+    ////
+    //fr.Show();
+    ////
+    ////
+    //fr.Dispose();
 
-    private bool isDisposed = false;
+
+    //using (FileReader fr = new FileReader())
+    //{
+    //    fr.Show();
+    //}                   // <--- fr.Dispose();
 
 
 
-    protected virtual void FreeMemory(bool needDisposing)
+    //using (FileReader fr = new FileReader())
+    //{
+    //    using (FileStream fs = new FileStream("", FileMode.Open)
+    //    {
+
+    //    }
+    //}
+
+
+    using FileReader fr = new FileReader();
+
+    fr.Show();
+    //
+    //
+}
+
+Execute();
+
+class FileReader : IDisposable
+{
+    public void Show()
     {
-        if (isDisposed)
-            return;
-
-        if (needDisposing)
-        {
-            // ОЧИСТКА УПРАВЛЯЕМЫХ РЕСУРСОВ
-            Console.WriteLine("ОЧИСТКА УПРАВЛЯЕМЫХ РЕСУРСОВ");
-        }
-
-        // ОЧИСТКА НЕУПРАВЛЯЕМЫХ РЕСУРСОВ
-        Console.WriteLine("ОЧИСТКА УПРАВЛЯЕМЫХ РЕСУРСОВ");
-
-        isDisposed = true;
+        Console.WriteLine("show");
     }
-
     public void Dispose()
     {
-        FreeMemory(true);
-        GC.SuppressFinalize(this);
-    }
-
-    ~FileReader()
-    {
-        FreeMemory(false);
+        Console.WriteLine("FileReader.Dispose()");
     }
 }
 
