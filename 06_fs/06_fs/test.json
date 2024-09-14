@@ -1,0 +1,14 @@
+{
+  "id": 123,
+  "name": "vasia",
+  "isAdmin": true,
+  "address": null,
+  "role": {
+    "id": 101,
+    "title": "admin"
+  },
+  "permissions": [
+    "read",
+    "write"
+  ]
+}
