@@ -1,14 +1,15 @@
 ﻿
 
 using FileProcessor;
+using FileProcessor.Renaming;
 
 const string rootPath = @"C:\Users\silver\Desktop\data";
 // const string rootPath = @"C:\Users\silver\Desktop\data_pro";
 
 string[] fileMasks =
 {
-    // "*.jpg",
-    "*.png",
+    "*.jpg",
+    // "*.png",
 };
 
 string[] dirMasks =
@@ -20,14 +21,22 @@ string[] dirMasks =
     "bin",
 };
 
-Finder finder = new Finder();
+Scaner scaner = new Scaner();
 
-finder.FileMasks = fileMasks;
-finder.DirMasks = dirMasks;
+scaner.FileMasks = fileMasks;
+scaner.DirMasks = dirMasks;
 
-// finder.FindFiles(rootPath);
-//finder.FindDirectories(rootPath);
-finder.FindAll(rootPath);
+scaner.FindFiles(rootPath);
+// finder.FindDirectories(rootPath);
+// scaner.FindAll(rootPath);
 
 
-Console.WriteLine();
+Renamer renamer = new Renamer(scaner.Container);
+renamer.RenameFiles(@"img_vasia_<uuid>");
+
+
+
+
+
+
+

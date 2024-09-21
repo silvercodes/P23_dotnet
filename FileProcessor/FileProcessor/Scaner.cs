@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace FileProcessor;
 
 // TODO: Methods refactoring!!!
-public class Finder
+public class Scaner
 {
     private RegexAnalizer regexAnalizer;
     public string[] DirMasks { get; set; } = { };
     public string[] FileMasks { get; set; } = { };
     public FSObjectContainer Container { get; set; } = new FSObjectContainer();
 
-    public Finder()
+    public Scaner()
     {
         regexAnalizer = new RegexAnalizer();
     }
