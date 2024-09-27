@@ -19,6 +19,7 @@ internal class StringGenerator
     {
         { "uuid", new UuidRuleHandler() },
         { "increment", new IncrementRuleHandler() },
+        { "old_name", new OldNameRuleHandler() },
     };
 
     public StringGenerator()
@@ -56,7 +57,7 @@ internal class StringGenerator
         });
     }
 
-    public string GetNext()
+    public string GetNext(FileInfo file)
     {
         string result = replacePattern;
 
@@ -64,7 +65,7 @@ internal class StringGenerator
         {
             IRuleHandler handler = handlers[rule.Shortcut];
 
-            string value = handler.GetValue();
+            string value = handler.GetValue(file);
             string pattern = RegexPatternPreparer.PreparePattern(rule.Signature);
 
             Regex replaceRegex = new Regex($@"\<{pattern}\>");

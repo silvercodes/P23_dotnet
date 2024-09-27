@@ -29,7 +29,7 @@ public class Renamer
 
         Container.Files.ForEach(f =>
         {
-            string generatedName = Generator.GetNext();
+            string generatedName = Generator.GetNext(f);
 
             string fileName = $"{generatedName}{f.Extension}";
 

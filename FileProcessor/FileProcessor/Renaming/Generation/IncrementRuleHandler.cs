@@ -36,7 +36,7 @@ internal class IncrementRuleHandler : IRuleHandler, IWithOptions
         current = from;
     }
 
-    public string GetValue()
+    public string GetValue(FileInfo? file = null)
     {
         string result = current.ToString();
 

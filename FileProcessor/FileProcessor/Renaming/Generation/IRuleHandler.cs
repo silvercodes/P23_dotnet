@@ -8,5 +8,8 @@ namespace FileProcessor.Renaming.Generation;
 
 public interface IRuleHandler
 {
-    public string GetValue();
+    public string GetValue(FileInfo? item = null);
+
+    // TODO: maybe???
+    //public string GetValue<T>(T? item = null) where T : class;
 }

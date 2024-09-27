@@ -35,7 +35,7 @@ scaner.FindFiles(rootPath);
 Renamer renamer = new Renamer(scaner.Container);
 renamer.AddRuleHanndler("constant", new ConstantRuleHandler());
 
-renamer.RenameFiles(@"img_<increment(1,1)>_<constant(vasia)>");
+renamer.RenameFiles(@"img_<increment(1,1)>_<constant(vasia)>_<old_name>");
 
 
 class ConstantRuleHandler : IRuleHandler, IWithOptions
@@ -53,7 +53,7 @@ class ConstantRuleHandler : IRuleHandler, IWithOptions
         }
     }
 
-    public string GetValue()
+    public string GetValue(FileInfo? file = null)
     {
         return cVal;
     }
