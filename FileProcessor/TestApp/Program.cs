@@ -3,14 +3,16 @@
 using FileProcessor;
 using FileProcessor.Renaming;
 using FileProcessor.Renaming.Generation;
+using FileProcessor.Reporting;
 
 const string rootPath = @"C:\Users\silver\Desktop\data";
 // const string rootPath = @"C:\Users\silver\Desktop\data_pro";
 
 string[] fileMasks =
 {
-    "*.jpg",
+    // "*.jpg",
     // "*.png",
+    "*.txt"
 };
 
 string[] dirMasks =
@@ -35,8 +37,9 @@ scaner.FindFiles(rootPath);
 Renamer renamer = new Renamer(scaner.Container);
 renamer.AddRuleHanndler("constant", new ConstantRuleHandler());
 
-renamer.RenameFiles(@"img_<increment(1,1)>_<constant(vasia)>_<old_name>");
+Report<FileInfo> report = renamer.RenameFiles(@"img_<increment(1,1)>_<constant(vasia)>_<old_name>");
 
+Console.WriteLine();
 
 class ConstantRuleHandler : IRuleHandler, IWithOptions
 {

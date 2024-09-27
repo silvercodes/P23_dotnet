@@ -1,4 +1,5 @@
 ﻿using FileProcessor.Renaming.Generation;
+using FileProcessor.Reporting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,20 +24,33 @@ public class Renamer
         Generator.AddRuleHandler(shortcut, handler);
     }
 
-    public void RenameFiles(string generatePattern)
+    public Report<FileInfo> RenameFiles(string generatePattern)
     {
+        Report<FileInfo> report = new Report<FileInfo>();
+        
         Generator.SetReplacePattern(generatePattern);
 
         Container.Files.ForEach(f =>
         {
-            string generatedName = Generator.GetNext(f);
+            try
+            {
+                string generatedName = Generator.GetNext(f);
 
-            string fileName = $"{generatedName}{f.Extension}";
+                string fileName = $"{generatedName}{f.Extension}";
 
-            string path = Path.Combine(f.Directory?.FullName ?? "", fileName);
+                string path = Path.Combine(f.Directory?.FullName ?? "", fileName);
 
-            f.MoveTo(path);
+                f.MoveTo(path);
+
+                report.pushSuccess(f);
+            }
+            catch (Exception ex)
+            {
+                report.pushError(f, ex);
+            }
         });
+
+        return report;
 
     }
 
