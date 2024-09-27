@@ -8,10 +8,42 @@ namespace FileProcessor.Renaming.Generation;
 
 internal class IncrementRuleHandler : IRuleHandler, IWithOptions
 {
-    public string OptionsString { get ; set ; }
+    private int from;
+    private int step;
+    private int current;
+
+    private string optionsString = string.Empty;
+    public string OptionsString
+    {
+        get
+        { 
+            return optionsString;
+        }
+        set
+        { 
+            optionsString = value;
+            ParseOptions();
+        }
+    }
+
+    private void ParseOptions()
+    {
+        string[] items = optionsString.Split(',');
+
+        from = Convert.ToInt32(items[0]);
+        step = Convert.ToInt32(items[1]);
+
+        current = from;
+    }
 
     public string GetValue()
     {
-        throw new NotImplementedException();
+        string result = current.ToString();
+
+        current += step;
+
+        return result;
     }
+
+    
 }

@@ -18,6 +18,11 @@ public class Renamer
         Generator = new StringGenerator();
     }
 
+    public void AddRuleHanndler(string shortcut, IRuleHandler handler)
+    {
+        Generator.AddRuleHandler(shortcut, handler);
+    }
+
     public void RenameFiles(string generatePattern)
     {
         Generator.SetReplacePattern(generatePattern);

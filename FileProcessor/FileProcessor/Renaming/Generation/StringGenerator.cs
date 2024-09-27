@@ -26,6 +26,14 @@ internal class StringGenerator
         extractor = new RulesExtractor();
     }
 
+    public void AddRuleHandler(string shortcut, IRuleHandler handler)
+    {
+        if (handlers.Keys.Contains(shortcut))
+            throw new RenamerException(RenamerException.DUPLICATE_SHORTCUT);
+
+        handlers.Add(shortcut, handler);
+    }
+
     public void SetReplacePattern(string replacePattern)
     {
         this.replacePattern = replacePattern;

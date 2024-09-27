@@ -2,6 +2,7 @@
 
 using FileProcessor;
 using FileProcessor.Renaming;
+using FileProcessor.Renaming.Generation;
 
 const string rootPath = @"C:\Users\silver\Desktop\data";
 // const string rootPath = @"C:\Users\silver\Desktop\data_pro";
@@ -32,7 +33,31 @@ scaner.FindFiles(rootPath);
 
 
 Renamer renamer = new Renamer(scaner.Container);
-renamer.RenameFiles(@"img_vasia_<uuid>");
+renamer.AddRuleHanndler("constant", new ConstantRuleHandler());
+
+renamer.RenameFiles(@"img_<increment(1,1)>_<constant(vasia)>");
+
+
+class ConstantRuleHandler : IRuleHandler, IWithOptions
+{
+    private string cVal = string.Empty;
+    public string OptionsString 
+    { 
+        get
+        {
+            return this.cVal;
+        }
+        set
+        {
+            this.cVal = value;
+        }
+    }
+
+    public string GetValue()
+    {
+        return cVal;
+    }
+}
 
 
 
