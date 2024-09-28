@@ -1,6 +1,7 @@
 ﻿
 
 using FileProcessor;
+using FileProcessor.Archiving;
 using FileProcessor.Removing;
 using FileProcessor.Renaming;
 using FileProcessor.Renaming.Generation;
@@ -34,7 +35,7 @@ scaner.DirMasks = dirMasks;
 
 // scaner.FindFiles(rootPath);
 // scaner.FindDirectories(rootPath);
-scaner.FindAll(rootPath);
+// scaner.FindAll(rootPath);
 
 
 
@@ -74,9 +75,21 @@ scaner.FindAll(rootPath);
 
 
 
-Remover remover = new Remover(scaner.Container);
+//Remover remover = new Remover(scaner.Container);
 
-Report<FileSystemInfo> report = remover.Execute(RemoverMode.All);
+//Report<FileSystemInfo> report = remover.Execute(RemoverMode.All);
+
+
+
+
+
+ArchiveEngine engine = new ArchiveEngine(ArchiveEngineMode.Zip);
+
+
+string archive = engine.CompressDirectory(rootPath, null, "p23_CS_dump");
+Console.WriteLine(archive);
+
+
 
 
 
