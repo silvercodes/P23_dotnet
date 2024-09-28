@@ -1,4 +1,5 @@
 ﻿using FileProcessor.Archiving.Exceptions;
+using FileProcessor.Archiving.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,11 +15,14 @@ internal class ZipComprressor : ICompressor
 {
     private const string EXTENSION = ".zip";
 
-    public CompressionLevel CompressionLevel { get; set; } = CompressionLevel.SmallestSize;
-    public bool IncludeParentDirectory { get; set; } = false;
+    public IOptions? Options { get; set; } = null;
 
     public string CompressDir(string target, string receiveDir, string archiveFileName)
     {
+        if (Options is null || Options is not IOptions)
+            Options = new ZipOptions();
+
+
         if (!Directory.Exists(target))
             throw new DirectoryNotFoundException($"Directory {target} not found");
 
@@ -27,9 +31,11 @@ internal class ZipComprressor : ICompressor
         if (File.Exists(outFile))
             throw new FileAlreadyExistsException($"File {outFile} already exists");
 
-        ZipFile.CreateFromDirectory(target, outFile, CompressionLevel, IncludeParentDirectory);
+        ZipFile.CreateFromDirectory(target, outFile, Options.CompressionLevel, Options.IncludeParentDirectory);
 
         return outFile;
+
+        
     }
 
     public void DecompressDir()

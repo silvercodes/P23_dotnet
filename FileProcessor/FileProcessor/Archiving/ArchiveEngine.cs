@@ -1,4 +1,5 @@
 ﻿using FileProcessor.Archiving.Exceptions;
+using FileProcessor.Archiving.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,15 @@ public class ArchiveEngine
 {
     private ICompressor compressor = null!;
 
+    private IOptions? Options { get; set; } = null;
 
+    public void SetOptions<T>(T options)
+        where T : IOptions
+    {
+        Options = options;
+
+        compressor.Options = Options;
+    }
     private void SetCompressor(ArchiveEngineMode mode)
     {
         compressor = mode switch
@@ -21,6 +30,9 @@ public class ArchiveEngine
 
             _ => throw new ArchiveEngineException(ArchiveEngineException.UNSUPPORTED_MODE),
         };
+
+        if (Options is not null)
+            compressor.Options = Options;
     }
 
     public ArchiveEngine(ArchiveEngineMode mode = ArchiveEngineMode.Zip)
