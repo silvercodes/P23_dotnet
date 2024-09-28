@@ -20,4 +20,11 @@ public class Report<T>
     {
         Items.Add(new ReportItem<T>(fSInfo, true, exception));
     }
+
+    public Report<T> Merge(Report<T> report)
+    {
+        Items.AddRange(report.Items);
+
+        return this;
+    }
 }
